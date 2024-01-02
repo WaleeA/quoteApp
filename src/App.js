@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Global } from '@emotion/react'
 import {extendTheme, ChakraProvider, useColorMode, Button, ButtonGroup, Box, Card, Image, IconButton, Center, CardBody  } from '@chakra-ui/react'
 import { MoonIcon, TriangleUpIcon } from '@chakra-ui/icons'
-import bookSlug from './pb.env';
 import bookLogo from './bookLogo.png'; 
 
 const App = () => {
@@ -16,9 +14,7 @@ const App = () => {
     const randomIndex = Math.floor(Math.random() * bookSlugs.length);
     return bookSlugs[randomIndex];
   };
-
   const [currentBookSlug, setCurrentBookSlug] = useState(getRandomBookSlug());
-  
   const [showTopBtn, setShowTopBtn] = useState(false);
 
   useEffect(() => {
@@ -29,7 +25,6 @@ const App = () => {
         setShowTopBtn(false);
       }
     };
-
     window.addEventListener('scroll', checkScrollTop);
 
     return () => {
@@ -38,16 +33,15 @@ const App = () => {
   }, [showTopBtn]);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top of page function  
   };
-
 
 function ThemeToggleButton() {
     const { colorMode, toggleColorMode } = useColorMode();
     return (
       <MoonIcon boxSize={6} onClick={toggleColorMode}>
         Switch to {colorMode === 'light' ? 'Dark' : 'Light'} Mode
-      </MoonIcon>
+      </MoonIcon> // Toggle the color mode with moon icon button
     );
 }
 
@@ -58,21 +52,19 @@ const theme = extendTheme({
 });
 
 const toggleArabic = () => {
-  setShowArabic(!showArabic);
+  setShowArabic(!showArabic); // Toggle the showArabic state
 };
 
 const refreshPage = () => {
   window.location.reload();
-};
+}; // Refresh the page
 
-
-//${process.env.REACT_APP_HADITH_API_KEY}
 useEffect(() => {
   const apiUrl = `https://www.hadithapi.com/api/hadiths?book=${currentBookSlug}&apiKey=$2y$10$vPGICR6blTNtOzixZkeeAsf0DXgGr8JyEg4CTyXfC9oVeDdc5QW`;
-  fetch(apiUrl)
+  fetch(apiUrl) // Fetch data from API
   .then(response => {
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error('Network response was not ok'); // Error handling
     }
     return response.json();
   })
@@ -88,7 +80,7 @@ useEffect(() => {
   .catch(error => {
     console.error('Error fetching data:', error);
     setError(error);
-    setIsLoading(false);
+    setIsLoading(false); // Error catching 
   });
 }, [currentBookSlug]);
  // Fetch new data when book slug changes
@@ -138,9 +130,9 @@ useEffect(() => {
               bg: 'gray.600', // Change this color based on your theme
             },
           }}/> 
-          <Button onClick={toggleArabic}>{showArabic ? 'Hide Arabic' : 'Show Arabic'} </Button>
+          <Button onClick={toggleArabic}>{showArabic ? 'Hide Arabic' : 'Show Arabic'} </Button> 
           <Button onClick={showNextHadith}>Show Next Hadith</Button>
-          </ButtonGroup>
+          </ButtonGroup> 
           <Center>
           <div onClick={refreshPage}><Image src ={bookLogo} alt='logo' width={["100px", "150px", "200px"]} textalign="center"></Image>
           </div>
@@ -155,7 +147,6 @@ useEffect(() => {
         </div>
       )}
     </div>
-    
     </Card>
     </Box>
     </ChakraProvider>
