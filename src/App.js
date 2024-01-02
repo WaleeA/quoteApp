@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {extendTheme, ChakraProvider, useColorMode, Button, Box  } from '@chakra-ui/react'
 import bookSlug from './pb.env';
 
 const App = () => {
@@ -9,6 +10,21 @@ const App = () => {
   const bookSlugs = ['sahih-bukhari', 'sahih-muslim', 'al-tirmidhi']; // Array of book slugs
   const [currentBookSlug, setCurrentBookSlug] = useState(bookSlugs[0]); // Start with the first book
 
+function ThemeToggleButton() {
+    const { colorMode, toggleColorMode } = useColorMode();
+    return (
+      <Button onClick={toggleColorMode}>
+        Switch to {colorMode === 'light' ? 'Dark' : 'Light'} Mode
+      </Button>
+    );
+}
+
+
+const theme = extendTheme({
+  config: {
+    useSystemColorMode: true, // Use the system color mode
+  },
+});
 //${process.env.REACT_APP_HADITH_API_KEY}
 useEffect(() => {
   const apiUrl = `https://www.hadithapi.com/api/hadiths?book=${currentBookSlug}&apiKey=$2y$10$vPGICR6blTNtOzixZkeeAsf0DXgGr8JyEg4CTyXfC9oVeDdc5QW`;
@@ -42,6 +58,9 @@ useEffect(() => {
   };
 
   return (
+    <ChakraProvider theme={theme}>
+      <Box p={4} textalign="center">
+      
     <div>
       {isLoading ? (
         <p>Loading...</p>
@@ -52,10 +71,16 @@ useEffect(() => {
           {console.log('Current index:', currentHadithIndex)} {/* Debugging */}
           {console.log('Current hadith:', hadiths[currentHadithIndex])} {/* Debugging */}
           <p>{hadiths[currentHadithIndex]?.hadithEnglish || 'No English text available'}</p>
-          <button onClick={showNextHadith}>Show Next Hadith</button>
+          <Box textAlign="center">
+          <Button onClick={showNextHadith}>Show Next Hadith</Button>
+          <div> </div>
+          <ThemeToggleButton />
+          </Box>
         </div>
       )}
     </div>
+    </Box>
+    </ChakraProvider>
   );
   
 };
