@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {extendTheme, ChakraProvider, useColorMode, Button, Box, Card  } from '@chakra-ui/react'
+import {extendTheme, ChakraProvider, useColorMode, Button, Box, Card, Image  } from '@chakra-ui/react'
 import bookSlug from './pb.env';
 
 const App = () => {
@@ -79,11 +79,14 @@ useEffect(() => {
           {console.log('Current index:', currentHadithIndex)} {/* Debugging */}
           {console.log('Current hadith:', hadiths[currentHadithIndex])} {/* Debugging */}
           <p>{hadiths[currentHadithIndex]?.bookSlug || 'No book'}</p>
+          <br></br>
           <p>{hadiths[currentHadithIndex]?.hadithEnglish || 'No English text available'}</p>
           </Card>
+          <br></br>
           <Box textAlign="center">
           <Button onClick={showNextHadith}>Show Next Hadith</Button>
           <ThemeToggleButton />
+          <Image src ="quoteapp/src/bookLogo.png"></Image>
           </Box>
         </div>
       )}
