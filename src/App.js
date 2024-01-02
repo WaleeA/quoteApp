@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Global } from '@emotion/react'
 import {extendTheme, ChakraProvider, useColorMode, Button, ButtonGroup, Box, Card, Image, IconButton, Center, CardBody  } from '@chakra-ui/react'
-import { MoonIcon } from '@chakra-ui/icons'
+import { MoonIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import bookSlug from './pb.env';
 import bookLogo from './bookLogo.png'; 
 
@@ -18,6 +19,29 @@ const App = () => {
 
   const [currentBookSlug, setCurrentBookSlug] = useState(getRandomBookSlug());
   
+  const [showTopBtn, setShowTopBtn] = useState(false);
+
+  useEffect(() => {
+    const checkScrollTop = () => {
+      if (!showTopBtn && window.pageYOffset > 200){
+        setShowTopBtn(true);
+      } else if (showTopBtn && window.pageYOffset <= 200){
+        setShowTopBtn(false);
+      }
+    };
+
+    window.addEventListener('scroll', checkScrollTop);
+
+    return () => {
+      window.removeEventListener('scroll', checkScrollTop);
+    };
+  }, [showTopBtn]);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+
 function ThemeToggleButton() {
     const { colorMode, toggleColorMode } = useColorMode();
     return (
@@ -26,7 +50,6 @@ function ThemeToggleButton() {
       </MoonIcon>
     );
 }
-
 
 const theme = extendTheme({
   config: {
@@ -110,18 +133,29 @@ useEffect(() => {
           <br></br>
           <Box textAlign="center">
           <ButtonGroup variant='outline' size= 'md' spacing='5'>
-          <IconButton aria-label='Search database' icon={<ThemeToggleButton />} /> 
-          <Button onClick={toggleArabic}>{showArabic ? 'Hide Arabic' : 'Show Arabic'}</Button>
+          <IconButton aria-label='Search database' icon={<ThemeToggleButton />} sx={{ 
+            '&:hover': { 
+              bg: 'gray.600', // Change this color based on your theme
+            },
+          }}/> 
+          <Button onClick={toggleArabic}>{showArabic ? 'Hide Arabic' : 'Show Arabic'} </Button>
           <Button onClick={showNextHadith}>Show Next Hadith</Button>
           </ButtonGroup>
           <Center>
           <div onClick={refreshPage}><Image src ={bookLogo} alt='logo' width={["100px", "150px", "200px"]} textalign="center"></Image>
           </div>
           </Center>
+          {showTopBtn && (
+          <IconButton aria-label='BacktoTop' icon={<TriangleUpIcon />} onClick={scrollToTop} colorScheme="gold">
+            Back to Top
+          </IconButton>
+          )}
+
           </Box>
         </div>
       )}
     </div>
+    
     </Card>
     </Box>
     </ChakraProvider>
