@@ -59,7 +59,7 @@ useEffect(() => {
 
   return (
     <ChakraProvider theme={theme}>
-      <Box p={4} textalign="center">
+       <Box p={4} textalign="center">
       
     <div>
       {isLoading ? (
@@ -70,6 +70,7 @@ useEffect(() => {
         <div>
           {console.log('Current index:', currentHadithIndex)} {/* Debugging */}
           {console.log('Current hadith:', hadiths[currentHadithIndex])} {/* Debugging */}
+          <p>{hadiths[currentHadithIndex]?.bookSlug || 'No book'}</p>
           <p>{hadiths[currentHadithIndex]?.hadithEnglish || 'No English text available'}</p>
           <Box textAlign="center">
           <Button onClick={showNextHadith}>Show Next Hadith</Button>
