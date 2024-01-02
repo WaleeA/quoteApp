@@ -72,7 +72,15 @@ useEffect(() => {
 
   // Function to display next hadith
   const showNextHadith = () => {
-    setCurrentHadithIndex(prevIndex => (prevIndex + 1) % hadiths.length);
+    // Randomly select a new book slug
+    const newBookSlug = getRandomBookSlug();
+    setCurrentBookSlug(newBookSlug);
+  
+    // Randomly select an index for a hadith within the bounds of the hadiths array
+    if (hadiths.length > 0) {
+      const randomIndex = Math.floor(Math.random() * hadiths.length);
+      setCurrentHadithIndex(randomIndex);
+    }
   };
 
   return (
