@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {extendTheme, ChakraProvider, useColorMode, Button, Box  } from '@chakra-ui/react'
+import {extendTheme, ChakraProvider, useColorMode, Button, Box, Card  } from '@chakra-ui/react'
 import bookSlug from './pb.env';
 
 const App = () => {
@@ -7,9 +7,14 @@ const App = () => {
   const [hadiths, setHadiths] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const bookSlugs = ['sahih-bukhari', 'sahih-muslim', 'al-tirmidhi']; // Array of book slugs
-  const [currentBookSlug, setCurrentBookSlug] = useState(bookSlugs[0]); // Start with the first book
+  const bookSlugs = ['sahih-bukhari', 'al-tirmidhi']; // Array of book slugs
+  const getRandomBookSlug = () => {
+    const randomIndex = Math.floor(Math.random() * bookSlugs.length);
+    return bookSlugs[randomIndex];
+  };
 
+  const [currentBookSlug, setCurrentBookSlug] = useState(getRandomBookSlug());
+  
 function ThemeToggleButton() {
     const { colorMode, toggleColorMode } = useColorMode();
     return (
@@ -59,7 +64,8 @@ useEffect(() => {
 
   return (
     <ChakraProvider theme={theme}>
-       <Box p={4} textalign="center">
+       <Box p={6} m="auto" maxW="container.md" textalign="center">
+        <Card>
       
     <div>
       {isLoading ? (
@@ -68,18 +74,21 @@ useEffect(() => {
         <p>Error loading data: {error.message}</p>
       ) : (
         <div>
+
+        <Card>
           {console.log('Current index:', currentHadithIndex)} {/* Debugging */}
           {console.log('Current hadith:', hadiths[currentHadithIndex])} {/* Debugging */}
           <p>{hadiths[currentHadithIndex]?.bookSlug || 'No book'}</p>
           <p>{hadiths[currentHadithIndex]?.hadithEnglish || 'No English text available'}</p>
+          </Card>
           <Box textAlign="center">
           <Button onClick={showNextHadith}>Show Next Hadith</Button>
-          <div> </div>
           <ThemeToggleButton />
           </Box>
         </div>
       )}
     </div>
+    </Card>
     </Box>
     </ChakraProvider>
   );
